@@ -21,7 +21,18 @@ declare namespace NodeJS {
   }
 }
 
+interface ElectronAPI {
+  openDialogDirectory: () => Promise<any>;
+  dbDirectories: () => Promise<any>;
+  directoryBackup: (directory: any) => Promise<any>;
+  dbDirectoryWrite: (directories: any) => Promise<any>;
+  dbDirectoryUpdate: (directory: any) => Promise<any>;
+  dbDirectoryCreate: (directory: any) => Promise<any>;
+  dbDirectoryDestroy: (directory: any) => Promise<any>;
+}
+
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
-  ipcRenderer: import('electron').IpcRenderer
+  ipcRenderer: import('electron').IpcRenderer,
+  electronAPI: ElectronAPI
 }

@@ -3,6 +3,16 @@ import { contextBridge, ipcRenderer } from 'electron'
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
 
+contextBridge.exposeInMainWorld('electronAPI', {
+  openDialogDirectory: () => ipcRenderer.invoke('dialog:openDirectory'),
+  dbDirectories: () => ipcRenderer.invoke('db:directories'),
+  directoryBackup: (directory:any) => ipcRenderer.invoke('directories:backup', directory),
+  dbDirectoryWrite: (directories:any) => ipcRenderer.invoke('db:directories:write', directories),
+  dbDirectoryUpdate: (directory:any) => ipcRenderer.invoke('db:directories:update', directory),
+  dbDirectoryCreate: (directory:any) => ipcRenderer.invoke('db:directories:create', directory),
+  dbDirectoryDestory: (directory:any) => ipcRenderer.invoke('db:directories:destroy', directory),
+})
+
 // `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
 function withPrototype(obj: Record<string, any>) {
   const protos = Object.getPrototypeOf(obj)
